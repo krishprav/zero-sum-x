@@ -1,0 +1,380 @@
+.tradingChart {
+  background: #000000;
+  border-radius: 15px;
+  border: 2px solid #1e1e1e;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0px 0 20px;
+  height: 100%;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s ease;
+  }
+}
+
+.chartHeader {
+  padding: 16px;
+  border-bottom: 1px solid #1e1e1e;
+  background-color: #000000;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.chartInfo {
+  flex: 1;
+}
+
+.assetInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.assetTitle {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.assetPrice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.currentPrice {
+  color: #26a69a;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.timeframeSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: auto;
+  min-width: 300px;
+}
+
+.timeframeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+.timeframeTitle {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 900;
+  margin: 0;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.timeframeCurrent {
+  font-size: 12px;
+  color: #888;
+}
+
+.timeframeCurrentValue {
+  color: #26a69a;
+  font-weight: 500;
+}
+
+.timeframeButtons {
+  display: flex;
+  justify-content: flex-start;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.timeframeButton {
+  background-color: #191919;
+  border: 1px solid #444;
+  color: #ccc;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: "Manrope", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  cursor: pointer;
+  width: 80px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  &.active {
+    background-color: #26a69a;
+    color: #fff;
+    border-color: #26a69a;
+    box-shadow: 0 4px 12px rgba(38, 166, 154, 0.25);
+    
+    &:hover {
+      background-color: #1e8a7a;
+      border-color: #1e8a7a;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.currentTimeframe {
+  font-size: 14px;
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.chartArea {
+  padding: 10px;
+  min-height: 400px;
+  background-color: #111111;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  margin: 10px;
+}
+
+.chartPlaceholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+}
+
+.chartInfo {
+  text-align: center;
+  margin-bottom: 2rem;
+  
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ccc;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    font-size: 14px;
+    color: #888;
+  }
+}
+
+.mockChart {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: #000;
+  border: 1px solid #222;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.chartGrid {
+  display: flex;
+  height: 100%;
+  position: relative;
+}
+
+.yAxis {
+  width: 80px;
+  background: #111;
+  border-right: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1rem 0.5rem;
+  font-size: 10px;
+  color: #666;
+  
+  span {
+    text-align: right;
+  }
+}
+
+.chartContent {
+  flex: 1;
+  position: relative;
+  padding: 1rem;
+}
+
+.priceLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #6366f1;
+  border-style: dashed;
+  
+  .priceLabel {
+    position: absolute;
+    right: 0;
+    top: -20px;
+    background: #6366f1;
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+.candlesticks {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 200px;
+  margin-top: 2rem;
+}
+
+.candle {
+  width: 8px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    transform: scale(1.2);
+  }
+  
+  &.green {
+    background: #6366f1;
+    height: 60px;
+    
+    &:nth-child(2) { height: 80px; }
+    &:nth-child(3) { height: 40px; }
+    &:nth-child(4) { height: 100px; }
+    &:nth-child(5) { height: 70px; }
+    &:nth-child(6) { height: 90px; }
+    &:nth-child(7) { height: 50px; }
+    &:nth-child(8) { height: 110px; }
+    &:nth-child(9) { height: 65px; }
+    &:nth-child(10) { height: 85px; }
+  }
+  
+  &.red {
+    background: #ff6b6b;
+    height: 70px;
+    
+    &:nth-child(2) { height: 50px; }
+    &:nth-child(3) { height: 90px; }
+    &:nth-child(4) { height: 30px; }
+    &:nth-child(5) { height: 80px; }
+    &:nth-child(6) { height: 45px; }
+    &:nth-child(7) { height: 95px; }
+    &:nth-child(8) { height: 35px; }
+    &:nth-child(9) { height: 75px; }
+    &:nth-child(10) { height: 55px; }
+  }
+}
+
+.xAxis {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+  font-size: 10px;
+  color: #666;
+  background: #111;
+  border-top: 1px solid #222;
+}
+
+.chartIcon {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: #6366f1;
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 1rem;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #333;
+  border-top: 4px solid #26a69a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.chartCanvas {
+  width: 100% !important;
+  height: 400px !important;
+  display: block;
+  background: #000000;
+  border-radius: 12px;
+  cursor: grab;
+  
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.chartLoading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  color: #888;
+  background: #111111;
+  border-radius: 12px;
+  
+  p {
+    margin-top: 1rem;
+    font-size: 14px;
+    font-family: "Manrope", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+.chartControls {
+  padding: 16px;
+  text-align: center;
+  border-top: 1px solid #1e1e1e;
+  background-color: #000000;
+  
+  p {
+    margin: 0;
+    color: #888;
+    font-size: 12px;
+    font-family: "Manrope", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

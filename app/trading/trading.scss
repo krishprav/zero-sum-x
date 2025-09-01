@@ -1,0 +1,434 @@
+.tradingAppWrapper {
+  background-color: #000000;
+  color: #ffffff;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 20px;
+}
+
+.loadingSpinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #333;
+  border-top: 4px solid #6366f1;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Navbar
+.navbar {
+  background: #111;
+  border-bottom: 1px solid #222;
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  width: 45px;
+  height: 45px;
+  background: #6366f1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.navbar-nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  &.active {
+    color: #6366f1;
+    background: rgba(99, 102, 241, 0.1);
+  }
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+.connectWalletButton {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+  }
+}
+
+// Trading Layout
+.tradingLayoutWrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+// Trading Header
+.tradingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #222;
+  
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+
+.priceSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.symbolContainerDesktop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #6366f1;
+  }
+}
+
+.symbolIcon {
+  width: 30px;
+  height: 30px;
+  background: #f7931a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.symbolInfoDesktop {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+  position: relative;
+  
+  .selectedAssetDisplay {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    
+    .assetName {
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .assetSymbol {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+    }
+  }
+  
+  .dropdownArrow {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 12px;
+    pointer-events: none;
+  }
+  
+  .symbolDropdown {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    color: transparent;
+    font-size: 16px;
+    
+    &:focus {
+      outline: none;
+    }
+    
+    option {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 12px 16px;
+      border: none;
+      
+      &:hover {
+        background: #2a2a2a;
+      }
+    }
+  }
+}
+
+.priceInfoDesktop {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.currentPrice {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.priceChange {
+  font-size: 16px;
+  font-weight: 600;
+  
+  &.positive {
+    color: #6366f1;
+  }
+  
+  &.negative {
+    color: #ff6b6b;
+  }
+}
+
+.statsSectionTradingDesktop {
+  display: flex;
+  gap: 3rem;
+  
+  @media (max-width: 1024px) {
+    gap: 2rem;
+  }
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 16px;
+  background: rgba(99, 102, 241, 0.1);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 8px;
+  margin: 0 8px;
+  
+  .statLabel {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .statValue {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+}
+
+// Main Trading Area
+.MidComponentWrapper {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.OrderPlacingColumn {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: fit-content;
+}
+
+// Bottom Ticker
+.positionsComponent {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.tabsContainer {
+  border-bottom: 1px solid #222;
+}
+
+.tabsList {
+  display: flex;
+}
+
+.tabButton {
+  background: none;
+  border: none;
+  color: #888;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+  
+  &:hover {
+    color: #fff;
+  }
+  
+  &.active {
+    color: #6366f1;
+    border-bottom-color: #6366f1;
+  }
+}
+
+.tabContent {
+  padding: 1rem;
+}
+
+.priceTicker {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  border-top: 1px solid rgba(99, 102, 241, 0.3);
+  padding: 8px 0;
+  z-index: 1000;
+  
+  .tickerContent {
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0 20px;
+    
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba(99, 102, 241, 0.1);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #6366f1;
+      border-radius: 2px;
+    }
+  }
+  
+  .tickerItem {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+    padding: 4px 12px;
+    background: rgba(99, 102, 241, 0.1);
+    border-radius: 6px;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    
+    .tickerSymbol {
+      font-weight: 600;
+      color: #6366f1;
+      margin-right: 8px;
+      font-size: 12px;
+    }
+    
+    .tickerPrice {
+      color: #fff;
+      margin-right: 8px;
+      font-size: 12px;
+    }
+    
+    .tickerChange {
+      font-size: 11px;
+      font-weight: 500;
+      
+      &.positive {
+        color: #10b981;
+      }
+      
+      &.negative {
+        color: #ef4444;
+      }
+    }
+  }
+}

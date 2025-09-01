@@ -1,0 +1,338 @@
+.orderComponent {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tabContainer {
+  margin-bottom: 1.5rem;
+}
+
+.MarketTab {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.activeLong {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #4f46e5;
+  }
+}
+
+.inActiveBtn {
+  background: #1a1a1a;
+  color: #888;
+  border: 1px solid #333;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #222;
+    color: #fff;
+  }
+}
+
+.dropdownWrapper {
+  position: relative;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  margin-top: 0.25rem;
+  z-index: 10;
+  overflow: hidden;
+  
+  div {
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #222;
+      color: #6366f1;
+    }
+  }
+}
+
+.orderForm {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formLabel {
+  font-size: 14px;
+  color: #888;
+  font-weight: 500;
+}
+
+.availableBalance {
+  font-size: 12px;
+  color: #888;
+}
+
+.inputContainer {
+  position: relative;
+}
+
+.orderInput {
+  width: 100%;
+  padding: 1rem;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: #6366f1;
+  }
+  
+  &::placeholder {
+    color: #666;
+  }
+}
+
+.maxButton {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #4f46e5;
+  }
+}
+
+.leverageSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.leverageContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.leverageProgressBar {
+  position: relative;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  margin: 0 0.5rem;
+}
+
+.leverageProgressLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: #333;
+  border-radius: 2px;
+}
+
+.leverageProgressFill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #6366f1;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.leverageDot {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: #333;
+  border: 2px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:nth-child(1) { left: -6px; }
+  &:nth-child(2) { left: 50%; transform: translate(-50%, -50%); }
+  &:nth-child(3) { right: -6px; }
+  
+  &.active {
+    background: #6366f1;
+    border-color: #6366f1;
+    transform: translateY(-50%) scale(1.2);
+    
+    &:nth-child(2) {
+      transform: translate(-50%, -50%) scale(1.2);
+    }
+  }
+  
+  &.filled {
+    background: #6366f1;
+    border-color: #6366f1;
+  }
+}
+
+.leverageLabels {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0.5rem;
+}
+
+.leverageLabel {
+  font-size: 12px;
+  color: #888;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    color: #fff;
+  }
+  
+  &.active {
+    color: #6366f1;
+    font-weight: 600;
+  }
+}
+
+.orderDetails {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detailRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.detailLabel {
+  color: #888;
+}
+
+.detailValue {
+  color: #fff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.usdcLogoTradingPanel {
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.PositionTab {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.long {
+  flex: 1;
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #222;
+    border-color: #6366f1;
+  }
+}
+
+.short {
+  flex: 1;
+  background: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #222;
+    border-color: #ff6b6b;
+  }
+}
+
+.connectWalletButton {
+  width: 100%;
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    background: #4f46e5;
+    transform: translateY(-2px);
+  }
+  
+  &:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.DepositComponent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}

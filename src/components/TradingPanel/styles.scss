@@ -1,0 +1,360 @@
+.tradingPanel {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  .panelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #333333;
+
+    .assetSelector {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 8px 12px;
+      background: #333333;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: #444444;
+      }
+
+      .assetSymbol {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ffffff;
+      }
+
+      .chevronIcon {
+        width: 16px;
+        height: 16px;
+        color: #888888;
+      }
+    }
+
+    .priceInfo {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+
+      .currentPrice {
+        font-size: 18px;
+        font-weight: 700;
+        color: #26a69a;
+      }
+
+      .priceChange {
+        font-size: 12px;
+        font-weight: 500;
+
+        &.positive {
+          color: #26a69a;
+        }
+
+        &.negative {
+          color: #ef5350;
+        }
+      }
+    }
+  }
+
+  .panelContent {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .tradingTabs {
+    display: flex;
+    gap: 8px;
+    background: #333333;
+    border-radius: 6px;
+    padding: 4px;
+
+    .tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      color: #888888;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #444444;
+        color: #ffffff;
+      }
+
+      &.active {
+        background: #26a69a;
+        color: #ffffff;
+      }
+
+      .tabIcon {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .inputSection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .inputLabel {
+      font-size: 14px;
+      font-weight: 500;
+      color: #cccccc;
+    }
+
+    .inputWrapper {
+      display: flex;
+      gap: 8px;
+
+      .marginInput {
+        flex: 1;
+        background: #333333;
+        border: 1px solid #444444;
+        border-radius: 6px;
+        padding: 12px 16px;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 500;
+
+        &:focus {
+          outline: none;
+          border-color: #26a69a;
+        }
+
+        &::placeholder {
+          color: #888888;
+        }
+      }
+
+      .maxButton {
+        background: #26a69a;
+        border: none;
+        border-radius: 6px;
+        padding: 12px 16px;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #1e8a7a;
+        }
+      }
+    }
+
+    .balanceText {
+      font-size: 12px;
+      color: #888888;
+    }
+  }
+
+  .leverageSection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .inputLabel {
+      font-size: 14px;
+      font-weight: 500;
+      color: #cccccc;
+    }
+
+    .leverageSelector {
+      position: relative;
+
+      .leverageButton {
+        width: 100%;
+        background: #333333;
+        border: 1px solid #444444;
+        border-radius: 6px;
+        padding: 12px 16px;
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: border-color 0.2s ease;
+
+        &:hover {
+          border-color: #26a69a;
+        }
+
+        .chevronIcon {
+          width: 16px;
+          height: 16px;
+          color: #888888;
+        }
+      }
+
+      .leverageOptions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #333333;
+        border: 1px solid #444444;
+        border-radius: 6px;
+        margin-top: 4px;
+        z-index: 10;
+        overflow: hidden;
+
+        .leverageOption {
+          width: 100%;
+          background: transparent;
+          border: none;
+          color: #ffffff;
+          padding: 12px 16px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background 0.2s ease;
+
+          &:hover {
+            background: #444444;
+          }
+        }
+      }
+    }
+  }
+
+  .estimatesSection {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: #222222;
+    border-radius: 6px;
+
+    .estimateRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .estimateLabel {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #cccccc;
+
+        .estimateIcon {
+          width: 16px;
+          height: 16px;
+          color: #888888;
+        }
+      }
+
+      .estimateValue {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ffffff;
+      }
+    }
+  }
+
+  .tradeButton {
+    background: #26a69a;
+    border: none;
+    border-radius: 6px;
+    padding: 16px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: #1e8a7a;
+    }
+
+    &:disabled {
+      background: #666666;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .tradingPanel {
+    padding: 16px;
+    gap: 16px;
+
+    .panelHeader {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+
+      .priceInfo {
+        align-items: flex-start;
+      }
+    }
+
+    .tradingTabs {
+      .tab {
+        padding: 10px 12px;
+        font-size: 13px;
+
+        .tabIcon {
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    .inputSection {
+      .inputWrapper {
+        .marginInput {
+          padding: 10px 12px;
+          font-size: 14px;
+        }
+
+        .maxButton {
+          padding: 10px 12px;
+          font-size: 12px;
+        }
+      }
+    }
+
+    .leverageSection {
+      .leverageSelector {
+        .leverageButton {
+          padding: 10px 12px;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .tradeButton {
+      padding: 14px;
+      font-size: 14px;
+    }
+  }
+}
