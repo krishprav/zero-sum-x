@@ -5,24 +5,20 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-# Copy root package files for workspace setup
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# Copy package.json for this specific app
+COPY package.json ./
 
-# Copy price_poller package.json
-COPY apps/price_poller/package.json ./apps/price_poller/
-
-# Install dependencies using pnpm
-RUN pnpm install --frozen-lockfile --prod
+# Install dependencies
+RUN pnpm install --prod
 
 # Copy source code
-COPY apps/price_poller ./apps/price_poller
+COPY . .
 
 # Build the application
-RUN cd apps/price_poller && pnpm run build
+RUN pnpm run build
 
 # Expose port
 EXPOSE 9090
 
 # Start the application
-WORKDIR /app/apps/price_poller
 CMD ["pnpm", "start"]
