@@ -2,10 +2,10 @@
   "compilerOptions": {
     "lib": ["ESNext"],
     "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "module": "CommonJS",
+    "moduleResolution": "node",
     "allowJs": false,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "noEmit": false,
     "outDir": "dist",
     "strict": true,

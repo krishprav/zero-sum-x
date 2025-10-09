@@ -1,4 +1,4 @@
-import { fromInternalPrice, toInternalPrice } from "./utils";
+import { fromInternalPrice, toInternalPrice } from "./utils.js";
 
 const KNOWN_QUOTES = [
   "USDT",

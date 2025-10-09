@@ -36,9 +36,6 @@ class PerformanceMiddleware {
     res.end = function(chunk?: any, encoding?: any) {
       const responseTime = Date.now() - startTime;
       
-      // Update average response time
-      (this as any).updateAverageResponseTime(responseTime);
-      
       // Set response time header
       res.setHeader('X-Response-Time', `${responseTime}ms`);
       
@@ -48,7 +45,7 @@ class PerformanceMiddleware {
       }
 
       return originalEnd.call(res, chunk, encoding);
-    }.bind(this);
+    };
 
     next();
   };
@@ -105,10 +102,9 @@ class PerformanceMiddleware {
       // Override res.json to cache the response
       const originalJson = res.json;
       res.json = function(data: any) {
-        (this as any).cacheManager?.set(cacheKey, data, ttl);
         res.setHeader('X-Cache', 'MISS');
         return originalJson.call(res, data);
-      }.bind(this);
+      };
 
       next();
     };

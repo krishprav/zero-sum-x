@@ -1,4 +1,4 @@
-import prisma from "./dbconfig";
+import prisma from "./dbconfig.js";
 
 export type TradeRow = {
   symbol: string;

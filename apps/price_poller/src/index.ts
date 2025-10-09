@@ -1,9 +1,9 @@
 import "dotenv/config";
 import { WebSocket } from "ws";
 import { createClient } from "redis";
-import { publishQuote } from "./redisops";
-import { toInternalPrice } from "./utils";
-import { saveTradeBatch } from "./dbops";
+import { publishQuote } from "./redisops.js";
+import { toInternalPrice } from "./utils.js";
+import { saveTradeBatch } from "./dbops.js";
 
 const BATCH_INTERVAL_MS = 10000;
 const SYMBOLS: string[] = (process.env.SYMBOLS
