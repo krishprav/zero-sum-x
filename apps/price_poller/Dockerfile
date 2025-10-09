@@ -14,6 +14,9 @@ RUN pnpm install
 # Copy source code
 COPY . .
 
+# Generate Prisma client
+RUN npx prisma generate
+
 # Build the application
 RUN pnpm run build
 

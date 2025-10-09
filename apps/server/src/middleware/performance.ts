@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { CacheManager } from '../utils/cacheManager.js';
 
 interface PerformanceMetrics {
@@ -37,7 +37,7 @@ class PerformanceMiddleware {
       const responseTime = Date.now() - startTime;
       
       // Update average response time
-      this.updateAverageResponseTime(responseTime);
+      (this as any).updateAverageResponseTime(responseTime);
       
       // Set response time header
       res.setHeader('X-Response-Time', `${responseTime}ms`);
@@ -47,7 +47,7 @@ class PerformanceMiddleware {
         console.warn(`Slow request: ${req.method} ${req.path} - ${responseTime}ms`);
       }
 
-      originalEnd.call(res, chunk, encoding);
+      return originalEnd.call(res, chunk, encoding);
     }.bind(this);
 
     next();
@@ -105,9 +105,9 @@ class PerformanceMiddleware {
       // Override res.json to cache the response
       const originalJson = res.json;
       res.json = function(data: any) {
-        this.cacheManager?.set(cacheKey, data, ttl);
+        (this as any).cacheManager?.set(cacheKey, data, ttl);
         res.setHeader('X-Cache', 'MISS');
-        originalJson.call(res, data);
+        return originalJson.call(res, data);
       }.bind(this);
 
       next();

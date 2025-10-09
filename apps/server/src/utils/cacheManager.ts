@@ -1,4 +1,4 @@
-import { createClient, RedisClientType } from 'redis';
+import { createClient, type RedisClientType } from 'redis';
 
 interface CacheConfig {
   defaultTTL: number;
@@ -14,7 +14,7 @@ interface CacheEntry<T> {
 
 export class CacheManager {
   private static instance: CacheManager;
-  private redis: RedisClientType;
+  private redis!: RedisClientType;
   private memoryCache: Map<string, CacheEntry<any>> = new Map();
   private config: CacheConfig;
 

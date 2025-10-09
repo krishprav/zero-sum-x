@@ -1,4 +1,4 @@
-import { Pool, PoolClient } from 'pg';
+import { Pool, type PoolClient } from 'pg';
 
 // Connection pool configuration for high-performance trading
 export const dbPool = new Pool({

@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router, type Request, type Response } from "express";
 import { executeQuery } from "../utils/dbPool.js";
 import { CacheManager } from "../utils/cacheManager.js";
 import { performanceMiddleware } from "../middleware/performance.js";
@@ -176,7 +176,7 @@ optimizedCandlesRouter.get("/bulk",
           await cacheManager.set(cacheKey, data, 120);
         }
 
-        results[symbol] = data;
+        results[symbol] = data as any[];
       });
 
       await Promise.all(promises);
