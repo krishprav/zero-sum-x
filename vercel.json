@@ -1,0 +1,11 @@
+{
+  "buildCommand": "pnpm install && pnpm run build --filter=web",
+  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs",
+  "installCommand": "pnpm install",
+  "functions": {
+    "apps/web/app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}
