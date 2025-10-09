@@ -30,10 +30,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (token && userData) {
       try {
         const parsedUser = JSON.parse(userData);
-('AuthContext: Setting user', parsedUser);
+        console.log('AuthContext: Setting user', parsedUser);
         setUser(parsedUser);
       } catch (error) {
-('AuthContext: Invalid user data', error);
+        console.log('AuthContext: Invalid user data', error);
         // Invalid user data, clear storage
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -45,35 +45,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-('AuthContext: Login attempt', { email, password: '***' });
+      console.log('AuthContext: Login attempt', { email, password: '***' });
       
       // Mock authentication - replace with actual API call
       if (email === 'demo@example.com' && password === 'password') {
         const userData = { id: '1', email };
         const token = 'mock-jwt-token';
         
-('AuthContext: Login successful, setting user', userData);
+        console.log('AuthContext: Login successful, setting user', userData);
         
         try {
           localStorage.setItem('token', token);
           localStorage.setItem('user', JSON.stringify(userData));
-('AuthContext: localStorage updated successfully');
+          console.log('AuthContext: localStorage updated successfully');
         } catch (storageError) {
-('AuthContext: localStorage error:', storageError);
+          console.log('AuthContext: localStorage error:', storageError);
           return false;
         }
         
         setUser(userData);
         
-('AuthContext: User set, isAuthenticated:', !!userData);
-('AuthContext: Current user state:', user);
+        console.log('AuthContext: User set, isAuthenticated:', !!userData);
+        console.log('AuthContext: Current user state:', user);
         return true;
       }
       
-('AuthContext: Login failed - invalid credentials');
+      console.log('AuthContext: Login failed - invalid credentials');
       return false;
     } catch (error) {
-('AuthContext: Login error:', error);
+      console.log('AuthContext: Login error:', error);
       return false;
     }
   };

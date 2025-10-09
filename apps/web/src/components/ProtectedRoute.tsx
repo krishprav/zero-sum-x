@@ -12,12 +12,12 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
 
-('ProtectedRoute: Render', { isAuthenticated, isLoading });
+  console.log('ProtectedRoute: Render', { isAuthenticated, isLoading });
 
   useEffect(() => {
-('ProtectedRoute: useEffect', { isAuthenticated, isLoading });
+    console.log('ProtectedRoute: useEffect', { isAuthenticated, isLoading });
     if (!isLoading && !isAuthenticated) {
-('ProtectedRoute: Redirecting to login');
+      console.log('ProtectedRoute: Redirecting to login');
       router.push('/login');
     }
   }, [isAuthenticated, isLoading, router]);
