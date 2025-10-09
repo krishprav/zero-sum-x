@@ -1,0 +1,43 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint --max-warnings 0",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@rainbow-me/rainbowkit": "^2.2.8",
+    "@repo/ui": "workspace:*",
+    "@tanstack/react-query": "^5.89.0",
+    "axios": "^1.11.0",
+    "clsx": "^2.1.1",
+    "lightweight-charts": "^5.0.8",
+    "lucide-react": "^0.542.0",
+    "next": "^15.5.4",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwind-merge": "^3.3.1",
+    "viem": "^2.37.7",
+    "wagmi": "^2.17.1",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.15.3",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.1",
+    "@types/ws": "^8.18.1",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^9.34.0",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "5.9.2"
+  }
+}

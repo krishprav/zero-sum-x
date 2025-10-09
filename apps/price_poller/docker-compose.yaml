@@ -1,0 +1,42 @@
+version: "3.9"
+services:
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+  timescale:
+    image: timescale/timescaledb:2.14.2-pg16
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: XYZ@123
+      POSTGRES_DB: trades_db
+    ports: ["5433:5432"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d trades_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - tsdb_data:/var/lib/postgresql/data
+  price-poller:
+    build: .
+    depends_on:
+      redis:
+        condition: service_healthy
+      timescale:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://user:XYZ@123@timescale:5432/trades_db
+      REDIS_URL: redis://redis:6379
+      SYMBOLS: BTCUSDT,ETHUSDT,SOLUSDT,BNBUSDT,ADAUSDT
+    restart: unless-stopped
+
+volumes:
+  tsdb_data:
+
