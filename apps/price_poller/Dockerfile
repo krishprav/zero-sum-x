@@ -8,14 +8,17 @@ WORKDIR /app
 # Copy package.json for this specific app
 COPY package.json ./
 
-# Install dependencies
-RUN pnpm install --prod
+# Install all dependencies (including dev for build)
+RUN pnpm install
 
 # Copy source code
 COPY . .
 
 # Build the application
 RUN pnpm run build
+
+# Install only production dependencies for runtime
+RUN pnpm install --prod
 
 # Expose port
 EXPOSE 9090
