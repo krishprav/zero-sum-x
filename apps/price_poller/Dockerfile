@@ -1,31 +1,21 @@
-# syntax=docker/dockerfile:1.6
+FROM node:18-alpine
 
-FROM node:20-alpine AS base
 WORKDIR /app
-RUN apk add --no-cache openssl libc6-compat \
-  && corepack enable && corepack prepare pnpm@9 --activate
 
-FROM base AS deps
-COPY package.json pnpm-lock.yaml ./
-COPY prisma ./prisma
-RUN pnpm install --frozen-lockfile
-RUN pnpm prisma:generate
+# Copy package files
+COPY package*.json ./
 
-FROM deps AS build
-COPY tsconfig.json ./
-COPY src ./src
-COPY seed.ts ./
-RUN pnpm build
+# Install dependencies
+RUN npm ci --only=production
 
-FROM node:20-alpine AS runtime
-WORKDIR /app
-RUN apk add --no-cache openssl libc6-compat \
-  && addgroup -S nodegrp && adduser -S nodeuser -G nodegrp
-ENV NODE_ENV=production
+# Copy source code
+COPY . .
 
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=build /app/dist ./dist
-COPY package.json ./
+# Build the application
+RUN npm run build
 
-USER nodeuser
-CMD ["node", "dist/index.js"]
+# Expose port
+EXPOSE 9090
+
+# Start the application
+CMD ["npm", "start"]
