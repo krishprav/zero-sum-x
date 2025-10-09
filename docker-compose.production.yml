@@ -1,0 +1,237 @@
+version: '3.9'
+
+services:
+  # Production Redis with clustering
+  redis-primary:
+    image: redis:7-alpine
+    container_name: redis-primary
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --maxmemory 2gb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_primary_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  redis-replica:
+    image: redis:7-alpine
+    container_name: redis-replica
+    ports:
+      - "6380:6379"
+    command: redis-server --slaveof redis-primary 6379 --appendonly yes
+    depends_on:
+      redis-primary:
+        condition: service_healthy
+    volumes:
+      - redis_replica_data:/data
+    restart: unless-stopped
+
+  # Production TimescaleDB with optimizations
+  timescale:
+    image: timescale/timescaledb:2.14.2-pg16
+    container_name: timescale-production
+    environment:
+      POSTGRES_USER: ${DB_USER:-trading_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME:-trades_db}
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256"
+    ports:
+      - "5432:5432"
+    volumes:
+      - timescale_data:/var/lib/postgresql/data
+      - ./apps/price_poller/prisma/optimizations.sql:/docker-entrypoint-initdb.d/optimizations.sql
+    restart: unless-stopped
+    command: >
+      postgres
+      -c shared_preload_libraries=timescaledb
+      -c timescaledb.max_background_workers=8
+      -c max_worker_processes=16
+      -c max_parallel_workers=16
+      -c max_parallel_workers_per_gather=4
+      -c shared_buffers=1GB
+      -c effective_cache_size=4GB
+      -c work_mem=64MB
+      -c maintenance_work_mem=256MB
+      -c checkpoint_completion_target=0.9
+      -c wal_buffers=16MB
+      -c default_statistics_target=100
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-trading_user} -d ${DB_NAME:-trades_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # Production backend with optimizations
+  backend:
+    build:
+      context: ./apps/server
+      dockerfile: Dockerfile.production
+    container_name: trading-backend
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DATABASE_URL: postgresql://${DB_USER:-trading_user}:${DB_PASSWORD}@timescale:5432/${DB_NAME:-trades_db}
+      REDIS_URL: redis://redis-primary:6379
+      JWT_SECRET: ${JWT_SECRET}
+    depends_on:
+      timescale:
+        condition: service_healthy
+      redis-primary:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Production frontend
+  frontend:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile.production
+    container_name: trading-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:5000}
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+
+  # Price poller service
+  price-poller:
+    build:
+      context: ./apps/price_poller
+      dockerfile: Dockerfile.production
+    container_name: price-poller
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://${DB_USER:-trading_user}:${DB_PASSWORD}@timescale:5432/${DB_NAME:-trades_db}
+      REDIS_URL: redis://redis-primary:6379
+      SYMBOLS: ${SYMBOLS:-BTCUSDT,ETHUSDT,SOLUSDT,BNBUSDT,XRPUSDT,ADAUSDT,DOGEUSDT,AVAXUSDT,LINKUSDT}
+    depends_on:
+      timescale:
+        condition: service_healthy
+      redis-primary:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+
+  # WebSocket gateway
+  websocket:
+    build:
+      context: ./apps/ws
+      dockerfile: Dockerfile.production
+    container_name: websocket-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      NODE_ENV: production
+      REDIS_URL: redis://redis-primary:6379
+      WS_PORT: 8080
+    depends_on:
+      redis-primary:
+        condition: service_healthy
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.25'
+
+  # Nginx reverse proxy and load balancer
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - backend
+      - websocket
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.1'
+
+  # Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  redis_primary_data:
+  redis_replica_data:
+  timescale_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

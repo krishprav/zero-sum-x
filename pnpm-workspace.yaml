@@ -1,0 +1,6 @@
+packages:
+  - "apps/web"
+  - "apps/server"
+  - "apps/price_poller"
+  - "apps/ws"
+  - "packages/*"
