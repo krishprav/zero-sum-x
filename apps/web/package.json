@@ -39,6 +39,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@types/lodash-es": "^4.17.12",
     "eslint": "^9.34.0"
   }
 }
