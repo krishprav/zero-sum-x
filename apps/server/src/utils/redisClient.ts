@@ -8,10 +8,10 @@ export class RedisManager {
 
   private constructor() {
     this.pubclient = createClient({
-      url: "redis://localhost:6379",
+      url: process.env.REDIS_URL || "redis://localhost:6379",
     });
     this.subclient = createClient({
-      url: "redis://localhost:6379",
+      url: process.env.REDIS_URL || "redis://localhost:6379",
     });
   }
 
@@ -25,7 +25,14 @@ export class RedisManager {
   }
 
   private async connect() {
-    await this.pubclient.connect(), await this.subclient.connect();
+    try {
+      await this.pubclient.connect();
+      await this.subclient.connect();
+      console.log("Redis connected successfully");
+    } catch (error) {
+      console.error("Redis connection failed:", error);
+      console.log("Redis operations will be disabled");
+    }
   }
 
   async publish(channel: string, message: any) {
