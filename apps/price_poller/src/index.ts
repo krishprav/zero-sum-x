@@ -4,7 +4,7 @@ import { createClient } from "redis";
 import { publishQuote } from "./redisops.js";
 import { toInternalPrice } from "./utils.js";
 import { saveTradeBatch } from "./dbops.js";
-import express from "express";
+import express, { type Request, type Response } from "express";
 
 const BATCH_INTERVAL_MS = 10000;
 const SYMBOLS: string[] = (process.env.SYMBOLS
@@ -43,7 +43,7 @@ async function main() {
   const app = express();
   const port = process.env.PORT || 9090;
   
-  app.get("/health", (req, res) => {
+  app.get("/health", (req: Request, res: Response) => {
     res.json({ 
       status: "ok", 
       service: "price-poller",
