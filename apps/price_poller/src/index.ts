@@ -4,6 +4,7 @@ import { createClient } from "redis";
 import { publishQuote } from "./redisops.js";
 import { toInternalPrice } from "./utils.js";
 import { saveTradeBatch } from "./dbops.js";
+import express from "express";
 
 const BATCH_INTERVAL_MS = 10000;
 const SYMBOLS: string[] = (process.env.SYMBOLS
@@ -38,6 +39,23 @@ type AggTrade = {
 };
 
 async function main() {
+  // Start HTTP server for health checks
+  const app = express();
+  const port = process.env.PORT || 9090;
+  
+  app.get("/health", (req, res) => {
+    res.json({ 
+      status: "ok", 
+      service: "price-poller",
+      timestamp: new Date().toISOString(),
+      symbols: SYMBOLS
+    });
+  });
+  
+  app.listen(port, () => {
+    console.log(`Price poller health server running on port ${port}`);
+  });
+
   const redisUrl = process.env.REDIS_URL ?? "redis://localhost:6379";
   const redisClient = createClient({ url: redisUrl });
   await redisClient.connect();
@@ -91,6 +109,11 @@ async function main() {
 
   ws.on("error", (err) => {
     console.error("WebSocket error:", err);
+    console.log("Will retry connection in 30 seconds...");
+    setTimeout(() => {
+      console.log("Attempting to reconnect...");
+      main().catch(console.error);
+    }, 30000);
   });
 
   ws.on("close", () => {
