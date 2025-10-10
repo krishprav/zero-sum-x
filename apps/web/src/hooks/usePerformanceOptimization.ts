@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useEffect } from 'react';
+import { useCallback, useMemo, useRef, useEffect, useState } from 'react';
 import { debounce, throttle } from 'lodash-es';
 
 // Performance optimization hooks for trading platform
